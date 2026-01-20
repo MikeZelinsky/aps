@@ -1,0 +1,106 @@
+/* package whatever; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Ideone
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		WebBlog blog = new WebBlog();
+		PushNotification readerPN = new PushNotification();
+		RSS readerRSS = new RSS();
+		blog.attach(readerPN);
+		blog.attach(readerRSS);
+		blog.publish("Hellowordl");
+		blog.publish("NewYork");
+		blog.publish("Water");
+		blog.publish("Fire");
+		blog.publish("Earth");
+		blog.publish("Wind");
+		blog.publish("Fork");
+	}
+}
+
+//create interface Media
+
+//create class WebBlog implements Media
+
+//create interface Reader
+
+//create class PushNotification implements Reader
+
+//create class RSS implements Reader
+
+ interface Media {
+	public void attach(Reader reader);
+	public void detach(Reader reader);
+	public void notification();
+	 
+}
+
+ class WebBlog implements Media {
+	private List<String> articles;
+	private List<Reader> readers;
+	WebBlog() {
+		this.articles = new ArrayList<>();
+		this.readers = new ArrayList<>();
+	}
+	public void publish(String article) {
+		articles.add(article);
+		notification();
+	}
+	
+	@Override
+	public void attach(Reader reader) {
+		readers.add(reader);
+	}
+	@Override
+	public void detach(Reader reader) {
+		readers.remove(reader);
+	}
+	@Override
+	public void notification() {
+		readers.forEach(x->{
+			x.update(articles.get(articles.size()-1));
+		});
+	}
+}
+
+ interface Reader {
+	public void update (String article);
+}
+
+ class PushNotification implements Reader {
+ 	@Override
+ 	public void update (String article) {
+ 		System.out.println("Public Notification: " + article);
+ 	}
+ }
+ 
+ class RSS implements Reader {
+ 		private List<String> articles;
+ 		RSS() {
+ 			this.articles = new ArrayList<>();
+ 		}
+ 		@Override
+ 		public void update(String article) {
+ 			// System.out.println("RSS Notification: " + article)
+ 			articles.add(article);
+ 			if(articles.size() == 5) {
+ 				System.out.println("RSS last 5 articles: ");
+ 				articles.forEach(x->{
+ 					System.out.println(x);
+ 				});
+ 				
+ 				articles.clear();
+ 			}
+ 			
+ 		}
+ }
+ 
+ 
+ 
+ 
